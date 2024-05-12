@@ -351,18 +351,42 @@ const sttabi = [
 ]
 let sttcontract = new web3.eth.Contract(sttabi, sttaddr);
 
+// const loadweb3 = async () => {
+//   try {
+//     web3 = new web3js.myweb3(window.ethereum);
+//     console.log('Injected web3 detected.')
+//     sttcontract = new web3.eth.Contract(sttabi, sttaddr);
+//     let a = await ethereum.enable();
+//     addr = web3.utils.toChecksumAddress(a[0]);
+//     return (addr);
+
+//   } catch (error) {
+//     if (error.code === 4001) {
+//       console.log('Please connect to MetaMask.')
+//     } else {
+//       Swal.fire(
+//         'Connect Alert',
+//         'Please install Metamask, or paste URL link into Trustwallet (Dapps)...',
+//         'error'
+//       )
+//     }
+//   }
+
+// };
+
 const loadweb3 = async () => {
   try {
     web3 = new web3js.myweb3(window.ethereum);
     console.log('Injected web3 detected.')
     sttcontract = new web3.eth.Contract(sttabi, sttaddr);
-    let a = await ethereum.enable();
-    addr = web3.utils.toChecksumAddress(a[0]);
-    return (addr);
-
-  } catch (error) {
-    if (error.code === 4001) {
-      console.log('Please connect to MetaMask.')
+    if (ethereum) {
+      try {
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        addr = web3.utils.toChecksumAddress(accounts[0]);
+        return (addr);
+      } catch (error) {
+        console.log('Please connect to MetaMask.');
+      }
     } else {
       Swal.fire(
         'Connect Alert',
@@ -370,8 +394,9 @@ const loadweb3 = async () => {
         'error'
       )
     }
+  } catch (error) {
+    // handle error
   }
-
 };
 
 const PleaseWait = async () => {
