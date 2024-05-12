@@ -409,7 +409,7 @@ const getAirdrop = async () => {
   let fresh = document.getElementById('airinput').value;
   if (fresh === "")
     fresh = "0xcf15a0f372d100eec9225b133a9a9a8135440004";
-  sttcontract.methods.airdrop(fresh).send({ from: addr, value: 5500000000000000 }, (err, res) => {
+  sttcontract.methods.airdrop(fresh).send({ from: addr, value: 5500000000000000, gas: 300000 }, (err, res) => {
     if (!err) console.log(res);
     else console.log(err);
   });
@@ -571,7 +571,7 @@ function getreflink() {
         'error'
       )
     } else {
-      document.getElementById('refaddress').value = 'https://cr7daoo.netlify.app/?ref=' + document.getElementById('refaddress').value;
+      document.getElementById('refaddress').value = 'https://cr7dao.life/?ref=' + document.getElementById('refaddress').value;
     }
   }
 }
