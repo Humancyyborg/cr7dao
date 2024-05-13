@@ -29,36 +29,30 @@ let sttcontract = new web3.eth.Contract(sttabi, sttaddr);
 // };
 
 
+
 const loadweb3 = async () => {
   try {
-    if (typeof window.ethereum !== 'undefined' && typeof window.ethereum.enable === 'function') {
-      web3 = new Web3(window.ethereum);
-      console.log('Injected web3 detected.');
+    // Check if Trust Wallet is available through WalletConnect
+    if (window.walletConnect) {
+      const connector = new WalletConnect({ infuraId: '3f9acdfa54dc41979c137619721554a5' });  // Replace with your Infura project ID (optional)
+      const accounts = await connector.connect();
+      web3 = new web3js.myweb3(connector.web3Provider);
+      console.log('Trust Wallet connected through WalletConnect.');
       sttcontract = new web3.eth.Contract(sttabi, sttaddr);
-      let accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-      addr = web3.utils.toChecksumAddress(accounts[0]);
+      addr = accounts[0];
       return addr;
     } else {
-      console.log('Please connect to MetaMask or use Trust Wallet.');
-      Swal.fire(
-        'Connect Alert',
-        'Please install MetaMask or open Trust Wallet to interact with this DApp.',
-        'error'
-      );
+      // If Trust Wallet not found, throw an error
+      throw new Error('Please connect your Trust Wallet using WalletConnect in DApps section.');
     }
   } catch (error) {
-    if (error.code === 4001) {
-      console.log('Please connect to MetaMask or use Trust Wallet.');
-    } else {
-      Swal.fire(
-        'Connect Alert',
-        'Please install MetaMask or open Trust Wallet to interact with this DApp.',
-        'error'
-      );
-    }
+    Swal.fire(
+      'Connect Alert',
+      error.message || 'An error occurred while connecting.',
+      'error'
+    )
   }
 };
-
 
 
 
