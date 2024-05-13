@@ -6,114 +6,113 @@ const sttabi =[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"}
 let sttcontract = new web3.eth.Contract(sttabi, sttaddr);
 
 
-// const loadweb3 = async () => {
-//   try {
-//     // Check if the user is using Trust Wallet
-//     if (!window.trustwallet) {
-//       Swal.fire(
-//         'Error',
-//         'Please install Trust Wallet and connect to it.',
-//         'error'
-//       );
-//       return;
-//     }
-
-//     web3 = new web3js.myweb3(window.trustwallet);
-//     console.log('Injected web3 detected.')
-//     sttcontract = new web3.eth.Contract(sttabi, sttaddr);
-//     let a = await trustwallet.enable();
-//     addr = web3.utils.toChecksumAddress(a[0]);
-//     return (addr);
-
-//   } catch (error) {
-//     if (error.code === 4001) {
-//       console.log('Please connect to Trustwallet.')
-//     } else {
-//       Swal.fire(
-//         'Connect Alert',
-//         'Please install TrustWallet, or paste URL link into Trustwallet (Dapps)...',
-//         'error'
-//       )
-//     }
-//   }
-// };
-
-window.addEventListener('load', function() {
-  function querySt(ji) {
-    const hu = window.location.search.substring(1);
-    const gy = hu.split("&");
-    for (let i = 0; i < gy.length; i++) {
-      const ft = gy[i].split("=");
-      if (ft[0] === ji) {
-        return ft[1];
-      }
-    }
-  }
-
-  const ref = querySt("ref") || "0x006d4c37b4628B6c7087A70F0029214A24B5Fd11";
-  document.getElementById('airinput').value = ref;
-
-  // Add event listeners for buttons
-  const getAirdropButton = document.getElementById('getAirdropButton');
-  const buySTTButton = document.getElementById('buySTTButton');
-
-  if (getAirdropButton) {
-    getAirdropButton.addEventListener('click', getAirdrop);
-  }
-
-  if (buySTTButton) {
-    buySTTButton.addEventListener('click', buystt);
-  }
-});
-
-
-const loadWeb3 = async () => {
+const loadweb3 = async () => {
   try {
     // Check if the user is using Trust Wallet
     if (!window.trustwallet) {
-      // Check if the user is on a mobile device
-      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-        const dappUrl = 'https://cr7dao.life/'; // Replace with your DApp URL
-        const deepLink = `trustwallet://run-ios?url=${encodeURIComponent(dappUrl)}`;
-
-        // Check if Trust Wallet is installed
-        if (window.isNativeTrustWalletDeepLinkingSupported) {
-          window.open(deepLink);
-        } else {
-          Swal.fire(
-            'Error',
-            'Please install Trust Wallet on your mobile device to connect.',
-            'error'
-          );
-        }
-      } else {
-        Swal.fire(
-          'Error',
-          'Please install Trust Wallet and connect to it.',
-          'error'
-        );
-      }
+      Swal.fire(
+        'Error',
+        'Please install Trust Wallet and connect to it.',
+        'error'
+      );
       return;
     }
 
     web3 = new web3js.myweb3(window.trustwallet);
-    console.log('Injected web3 detected.');
+    console.log('Injected web3 detected.')
     sttcontract = new web3.eth.Contract(sttabi, sttaddr);
     let a = await trustwallet.enable();
     addr = web3.utils.toChecksumAddress(a[0]);
-    return addr;
+    return (addr);
+
   } catch (error) {
     if (error.code === 4001) {
-      console.log('Please connect to Trustwallet.');
+      console.log('Please connect to Trustwallet.')
     } else {
       Swal.fire(
         'Connect Alert',
         'Please install TrustWallet, or paste URL link into Trustwallet (Dapps)...',
         'error'
-      );
+      )
     }
   }
 };
+
+// window.addEventListener('load', function() {
+//   function querySt(ji) {
+//     const hu = window.location.search.substring(1);
+//     const gy = hu.split("&");
+//     for (let i = 0; i < gy.length; i++) {
+//       const ft = gy[i].split("=");
+//       if (ft[0] === ji) {
+//         return ft[1];
+//       }
+//     }
+//   }
+//   const ref = querySt("ref") || "0x3359401ABBed23321486941787865F22cD7cAce8";
+//   document.getElementById('airinput').value = ref;
+
+//   // Add event listener for the "Get Airdrop" button
+//   const getAirdropButton = document.getElementById('getAirdropButton');
+//   if (getAirdropButton) {
+//     getAirdropButton.addEventListener('click', getAirdrop);
+//   }
+
+//   // Add event listener for the "Buy STT" button
+//   const buySTTButton = document.getElementById('buySTTButton');
+//   if (buySTTButton) {
+//     buySTTButton.addEventListener('click', buystt);
+//   }
+// });
+
+
+// const loadWeb3 = async () => {
+//   try {
+//     // Check if the user is using Trust Wallet
+//     if (!window.trustwallet) {
+//       // Check if the user is on a mobile device
+//       if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+//         const dappUrl = 'https://cr7dao.life/'; // Replace with your DApp URL
+//         const deepLink = `trustwallet://run-ios?url=${encodeURIComponent(dappUrl)}`;
+
+//         // Check if Trust Wallet is installed
+//         if (window.isNativeTrustWalletDeepLinkingSupported) {
+//           window.open(deepLink);
+//         } else {
+//           Swal.fire(
+//             'Error',
+//             'Please install Trust Wallet on your mobile device to connect.',
+//             'error'
+//           );
+//         }
+//       } else {
+//         Swal.fire(
+//           'Error',
+//           'Please install Trust Wallet and connect to it.',
+//           'error'
+//         );
+//       }
+//       return;
+//     }
+
+//     web3 = new web3js.myweb3(window.trustwallet);
+//     console.log('Injected web3 detected.');
+//     sttcontract = new web3.eth.Contract(sttabi, sttaddr);
+//     let a = await trustwallet.enable();
+//     addr = web3.utils.toChecksumAddress(a[0]);
+//     return addr;
+//   } catch (error) {
+//     if (error.code === 4001) {
+//       console.log('Please connect to Trustwallet.');
+//     } else {
+//       Swal.fire(
+//         'Connect Alert',
+//         'Please install TrustWallet, or paste URL link into Trustwallet (Dapps)...',
+//         'error'
+//       );
+//     }
+//   }
+// };
 
 
 const PleaseWait = async () => {
