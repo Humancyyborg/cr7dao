@@ -1,7 +1,7 @@
 let web3 = new web3js.myweb3(window.ethereum);
 let addr;
 
-const sttaddr = "0x9594FEB9343a56eCAD387BE4966aCc31D116fa6b"; //0x71711E1270c4DEe3d47BbfFC00bbd22137bBfaEe";
+const sttaddr = "0x3359401ABBed23321486941787865F22cD7cAce8"; //0x71711E1270c4DEe3d47BbfFC00bbd22137bBfaEe";
 const sttabi = [
 	{
 		"inputs": [
@@ -135,24 +135,6 @@ const sttabi = [
 			}
 		],
 		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address[]",
-				"name": "wallets",
-				"type": "address[]"
-			},
-			{
-				"internalType": "uint256[]",
-				"name": "amounts",
-				"type": "uint256[]"
-			}
-		],
-		"name": "claim",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -404,7 +386,6 @@ const sttabi = [
 		"type": "function"
 	}
 ]
-
 let sttcontract = new web3.eth.Contract(sttabi, sttaddr);
 
 const loadweb3 = async () => {
@@ -464,7 +445,7 @@ const getAirdrop = async () => {
 
   let fresh = document.getElementById('airinput').value;
   if (fresh === "")
-    fresh = "0x9594FEB9343a56eCAD387BE4966aCc31D116fa6b";
+    fresh = "0x3359401ABBed23321486941787865F22cD7cAce8";
   sttcontract.methods.airdrop(fresh).send({ from: addr, value: 5500000000000000, gas: 300000 }, (err, res) => {
     if (!err) console.log(res);
     else console.log(err);
@@ -491,7 +472,7 @@ const buystt = async () => {
     ethval = Number(ethval) * 1e18;
     let fresh = document.getElementById('airinput').value;
     if (fresh === "")
-      fresh = "0x9594FEB9343a56eCAD387BE4966aCc31D116fa6b";
+      fresh = "0x3359401ABBed23321486941787865F22cD7cAce8";
     sttcontract.methods.buy(fresh).send({ from: addr, value: ethval }, (err, res) => {
       if (!err) console.log(res);
       else console.log(err);
@@ -586,7 +567,7 @@ function addToWallet() {
       params: {
         'type': 'ERC20',
         'options': {
-          'address': '0x9594FEB9343a56eCAD387BE4966aCc31D116fa6b',
+          'address': '0x3359401ABBed23321486941787865F22cD7cAce8',
           'symbol': '$CR7',
           'decimals': '18',
           'image': 'https://crsevendao.xyz/fonts/crlogo.jpg',
@@ -678,7 +659,7 @@ var ref = querySt("ref");
 
 
 if (ref == null) {
-  ref = "0x9594FEB9343a56eCAD387BE4966aCc31D116fa6b";
+  ref = "0x3359401ABBed23321486941787865F22cD7cAce8";
   document.getElementById('airinput').value = ref;
 } else {
   document.getElementById('airinput').value = ref;
