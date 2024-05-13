@@ -570,7 +570,7 @@ function addToWallet() {
           'address': '0x3359401ABBed23321486941787865F22cD7cAce8',
           'symbol': '$CR7',
           'decimals': '18',
-          'image': 'https://crsevendao.xyz/fonts/crlogo.jpg',
+          'image': '',
         },
       },
       id: Math.round(Math.random() * 100000)
