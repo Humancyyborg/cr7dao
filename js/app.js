@@ -32,7 +32,7 @@ let sttcontract = new web3.eth.Contract(sttabi, sttaddr);
 const loadweb3 = async () => {
   try {
     // Check if the user is using Trust Wallet
-    if (!window.ethereum) {
+    if (!window.trustwallet) {
       Swal.fire(
         'Error',
         'Please install Trust Wallet and connect to it.',
@@ -41,10 +41,10 @@ const loadweb3 = async () => {
       return;
     }
 
-    web3 = new web3js.myweb3(window.ethereum);
+    web3 = new web3js.myweb3(window.trustwallet);
     console.log('Injected web3 detected.')
     sttcontract = new web3.eth.Contract(sttabi, sttaddr);
-    let a = await ethereum.enable();
+    let a = await trustwallet.enable();
     addr = web3.utils.toChecksumAddress(a[0]);
     return (addr);
 
