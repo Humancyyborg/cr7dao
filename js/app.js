@@ -5,28 +5,61 @@ const sttaddr = "0x006d4c37b4628B6c7087A70F0029214A24B5Fd11"; //0x71711E1270c4DE
 const sttabi =[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"burner","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensBurned","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"_refer","type":"address"}],"name":"airdrop","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"_addr","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"allocationForRewards","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner_","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"burnTokens","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_refer","type":"address"}],"name":"buy","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"cap","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"clearETH","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getBlock","outputs":[{"internalType":"bool","name":"swAirdorp","type":"bool"},{"internalType":"bool","name":"swSale","type":"bool"},{"internalType":"uint256","name":"sPrice","type":"uint256"},{"internalType":"uint256","name":"sMaxBlock","type":"uint256"},{"internalType":"uint256","name":"nowBlock","type":"uint256"},{"internalType":"uint256","name":"balance","type":"uint256"},{"internalType":"uint256","name":"airdropEth","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"stateMutability":"payable","type":"receive"}]
 let sttcontract = new web3.eth.Contract(sttabi, sttaddr);
 
+// const loadweb3 = async () => {
+//   try {
+//     web3 = new web3js.myweb3(window.ethereum);
+//     console.log('Injected web3 detected.')
+//     sttcontract = new web3.eth.Contract(sttabi, sttaddr);
+//     let a = await ethereum.enable();
+//     addr = web3.utils.toChecksumAddress(a[0]);
+//     return (addr);
+
+//   } catch (error) {
+//     if (error.code === 4001) {
+//       console.log('Please connect to MetaMask.')
+//     } else {
+//       Swal.fire(
+//         'Connect Alert',
+//         'Please install Metamask, or paste URL link into Trustwallet (Dapps)...',
+//         'error'
+//       )
+//     }
+//   }
+
+// };
+
+
 const loadweb3 = async () => {
   try {
-    web3 = new web3js.myweb3(window.ethereum);
-    console.log('Injected web3 detected.')
-    sttcontract = new web3.eth.Contract(sttabi, sttaddr);
-    let a = await ethereum.enable();
-    addr = web3.utils.toChecksumAddress(a[0]);
-    return (addr);
-
+    // Check if Trust Wallet is the provider
+    if (typeof window.ethereum !== 'undefined' && window.ethereum.isTrust) {
+      web3 = new web3js.myweb3(window.ethereum);
+      console.log('Injected web3 detected for Trust Wallet.');
+      sttcontract = new web3.eth.Contract(sttabi, sttaddr);
+      let a = await ethereum.enable();
+      addr = web3.utils.toChecksumAddress(a[0]);
+      return addr;
+    } else {
+      console.log('Please connect to MetaMask or use Trust Wallet.');
+      Swal.fire(
+        'Connect Alert',
+        'Please install MetaMask or open Trust Wallet to interact with this DApp.',
+        'error'
+      );
+    }
   } catch (error) {
     if (error.code === 4001) {
-      console.log('Please connect to MetaMask.')
+      console.log('Please connect to MetaMask or use Trust Wallet.');
     } else {
       Swal.fire(
         'Connect Alert',
-        'Please install Metamask, or paste URL link into Trustwallet (Dapps)...',
+        'Please install MetaMask or open Trust Wallet to interact with this DApp.',
         'error'
-      )
+      );
     }
   }
-
 };
+
 
 
 
