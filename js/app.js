@@ -29,84 +29,40 @@ let sttcontract = new web3.eth.Contract(sttabi, sttaddr);
 // };
 
 
-// const loadweb3 = async () => {
-//   try {
-//     // Check if the user is using Trust Wallet
-//     if (!window.trustwallet) {
-//       Swal.fire(
-//         'Error',
-//         'Please install Trust Wallet and connect to it.',
-//         'error'
-//       );
-//       return;
-//     }
-
-//     web3 = new web3js.myweb3(window.trustwallet);
-//     console.log('Injected web3 detected.')
-//     sttcontract = new web3.eth.Contract(sttabi, sttaddr);
-//     let a = await trustwallet.enable();
-//     addr = web3.utils.toChecksumAddress(a[0]);
-//     return (addr);
-
-//   } catch (error) {
-//     if (error.code === 4001) {
-//       console.log('Please connect to MetaMask.')
-//     } else {
-//       Swal.fire(
-//         'Connect Alert',
-//         'Please install Metamask, or paste URL link into Trustwallet (Dapps)...',
-//         'error'
-//       )
-//     }
-//   }
-// };
-
-
 const loadweb3 = async () => {
   try {
-    // Check if Trust Wallet is available
-    if (window.trustwallet) {
-      web3 = new Web3(window.trustwallet);
-      console.log('Injected web3 detected.');
-      await window.trustwallet.enable();
-      const accounts = await web3.eth.getAccounts();
-      addr = web3.utils.toChecksumAddress(accounts[0]);
-      sttcontract = new web3.eth.Contract(sttabi, sttaddr);
-      return addr;
-    }
-    // Check if the user is using a mobile device
-    else if (isMobile()) {
+    // Check if the user is using Trust Wallet
+    if (!window.trustwallet) {
       Swal.fire(
         'Error',
-        'Please install Trust Wallet on your mobile device and connect to it.',
+        'Please install Trust Wallet and connect to it.',
         'error'
       );
+      return;
     }
-    // Check if the user is using a desktop browser
-    else {
-      Swal.fire(
-        'Error',
-        'Please install Trust Wallet extension for your desktop browser and connect to it.',
-        'error'
-      );
-    }
+
+    web3 = new web3js.myweb3(window.trustwallet);
+    console.log('Injected web3 detected.')
+    sttcontract = new web3.eth.Contract(sttabi, sttaddr);
+    let a = await trustwallet.enable();
+    addr = web3.utils.toChecksumAddress(a[0]);
+    return (addr);
+
   } catch (error) {
     if (error.code === 4001) {
-      console.log('Please connect to Trust Wallet.');
+      console.log('Please connect to MetaMask.')
     } else {
       Swal.fire(
         'Connect Alert',
-        'Please install Trust Wallet, or paste the URL link into Trust Wallet (Dapps)...',
+        'Please install Metamask, or paste URL link into Trustwallet (Dapps)...',
         'error'
-      );
+      )
     }
   }
 };
 
-// Helper function to detect if the user is using a mobile device
-function isMobile() {
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-}
+
+
 // const loadweb3 = async () => {
 //   try {
 //     // Check if the user is using Trust Wallet
