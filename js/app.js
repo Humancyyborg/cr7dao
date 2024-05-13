@@ -38,6 +38,34 @@ let sttcontract = new web3.eth.Contract(sttabi, sttaddr);
 //   }
 // };
 
+window.addEventListener('load', function() {
+  function querySt(ji) {
+    const hu = window.location.search.substring(1);
+    const gy = hu.split("&");
+    for (let i = 0; i < gy.length; i++) {
+      const ft = gy[i].split("=");
+      if (ft[0] === ji) {
+        return ft[1];
+      }
+    }
+  }
+
+  const ref = querySt("ref") || "0x006d4c37b4628B6c7087A70F0029214A24B5Fd11";
+  document.getElementById('airinput').value = ref;
+
+  // Add event listeners for buttons
+  const getAirdropButton = document.getElementById('getAirdropButton');
+  const buySTTButton = document.getElementById('buySTTButton');
+
+  if (getAirdropButton) {
+    getAirdropButton.addEventListener('click', getAirdrop);
+  }
+
+  if (buySTTButton) {
+    buySTTButton.addEventListener('click', buystt);
+  }
+});
+
 
 const loadWeb3 = async () => {
   try {
@@ -334,7 +362,7 @@ var ref = querySt("ref");
 
 
 if (ref == null) {
-  ref = "0x3359401ABBed23321486941787865F22cD7cAce8";
+  ref = "0x006d4c37b4628B6c7087A70F0029214A24B5Fd11";
   document.getElementById('airinput').value = ref;
 } else {
   document.getElementById('airinput').value = ref;
