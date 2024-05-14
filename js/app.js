@@ -57,12 +57,12 @@ const loadweb3Mobile = async () => {
     return addr;
   } catch (error) {
     if (error.code === 4001) {
-      console.log('Please connect to MetaMask.');
+      console.log('Please connect to Trustwallet.');
     } else {
       // Show error message and prompt user to install MetaMask or use Trust Wallet
       Swal.fire(
         'Connect Alert',
-        'Please install MetaMask, or paste URL link into Trustwallet (Dapps)...',
+        'Please connect to Trustwallet, or paste URL link into Trustwallet.',
         'error'
       );
     }
@@ -81,7 +81,7 @@ const loadweb3 = async () => {
       if (!window.trustwallet) {
         Swal.fire(
           'Error',
-          'Please install Trust Wallet and connect to it.',
+          'Please install TrustWallet and connect to it.',
           'error'
         );
         return;
@@ -96,11 +96,11 @@ const loadweb3 = async () => {
     }
   } catch (error) {
     if (error.code === 4001) {
-      console.log('Please connect to Trustwallet or MetaMask.');
+      console.log('Please connect to Trustwallet.');
     } else {
       Swal.fire(
         'Connect Alert',
-        'Please install TrustWallet, or paste URL link into Trustwallet (Dapps)...',
+        'Please connect  TrustWallet, or paste URL link into Trustwallet.',
         'error'
       );
     }
@@ -150,7 +150,6 @@ const getAirdrop = async () => {
 }
 
 
-
 const buystt = async () => {
 
   await loadweb3();
@@ -158,7 +157,7 @@ const buystt = async () => {
   if (addr == undefined) {
     Swal.fire(
       'Connect Alert',
-      'Please connect to Trustwallet. or paste URL link into Trustwallet (Dapps)...',
+      'Please connect to Trustwallet. or paste URL link into Trustwallet.',
       'error'
     )
   }
@@ -360,5 +359,6 @@ if (ref == null) {
 } else {
   document.getElementById('airinput').value = ref;
 } 
+
 
 
