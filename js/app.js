@@ -62,7 +62,7 @@ const loadweb3Mobile = async () => {
       // Show error message and prompt user to install MetaMask or use Trust Wallet
       Swal.fire(
         'Connect Alert',
-        'Please connect to Trustwallet, or paste URL link into Trustwallet.',
+        'Please paste URL link into Trustwallet.',
         'error'
       );
     }
