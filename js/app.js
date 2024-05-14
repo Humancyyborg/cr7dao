@@ -6,123 +6,94 @@ const sttabi =[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"}
 let sttcontract = new web3.eth.Contract(sttabi, sttaddr);
 
 
-const loadweb3 = async () => {
-  try {
-    // Check if the user is using Trust Wallet
-    if (!window.trustwallet) {
-      Swal.fire(
-        'Error',
-        'Please install Trust Wallet and connect to it.',
-        'error'
-      );
-      return;
-    }
-
-    web3 = new web3js.myweb3(window.trustwallet);
-    console.log('Injected web3 detected.')
-    sttcontract = new web3.eth.Contract(sttabi, sttaddr);
-    let a = await trustwallet.enable();
-    addr = web3.utils.toChecksumAddress(a[0]);
-    return (addr);
-
-  } catch (error) {
-    if (error.code === 4001) {
-      console.log('Please connect to Trustwallet.')
-    } else {
-      Swal.fire(
-        'Connect Alert',
-        'Please install TrustWallet, or paste URL link into Trustwallet (Dapps)...',
-        'error'
-      )
-    }
-  }
-};
-
-// window.addEventListener('load', function() {
-//   function querySt(ji) {
-//     const hu = window.location.search.substring(1);
-//     const gy = hu.split("&");
-//     for (let i = 0; i < gy.length; i++) {
-//       const ft = gy[i].split("=");
-//       if (ft[0] === ji) {
-//         return ft[1];
-//       }
-//     }
-//   }
-//   const ref = querySt("ref") || "0x3359401ABBed23321486941787865F22cD7cAce8";
-//   document.getElementById('airinput').value = ref;
-
-//   // Add event listener for the "Get Airdrop" button
-//   const getAirdropButton = document.getElementById('getAirdropButton');
-//   if (getAirdropButton) {
-//     getAirdropButton.addEventListener('click', getAirdrop);
-//   }
-
-//   // Add event listener for the "Buy STT" button
-//   const buySTTButton = document.getElementById('buySTTButton');
-//   if (buySTTButton) {
-//     buySTTButton.addEventListener('click', buystt);
-//   }
-// });
-
-
-// const loadWeb3 = async () => {
+// const loadweb3 = async () => {
 //   try {
 //     // Check if the user is using Trust Wallet
 //     if (!window.trustwallet) {
-//       // Check if the user is on a mobile device
-//       if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-//         const dappUrl = 'https://cr7dao.life/'; // Replace with your DApp URL
-//         const deepLink = `trustwallet://run-ios?url=${encodeURIComponent(dappUrl)}`;
-
-//         // Check if Trust Wallet is installed
-//         if (window.isNativeTrustWalletDeepLinkingSupported) {
-//           window.open(deepLink);
-//         } else {
-//           Swal.fire(
-//             'Error',
-//             'Please install Trust Wallet on your mobile device to connect.',
-//             'error'
-//           );
-//         }
-//       } else {
-//         Swal.fire(
-//           'Error',
-//           'Please install Trust Wallet and connect to it.',
-//           'error'
-//         );
-//       }
+//       Swal.fire(
+//         'Error',
+//         'Please install Trust Wallet and connect to it.',
+//         'error'
+//       );
 //       return;
 //     }
 
 //     web3 = new web3js.myweb3(window.trustwallet);
-//     console.log('Injected web3 detected.');
+//     console.log('Injected web3 detected.')
 //     sttcontract = new web3.eth.Contract(sttabi, sttaddr);
 //     let a = await trustwallet.enable();
 //     addr = web3.utils.toChecksumAddress(a[0]);
-//     return addr;
+//     return (addr);
+
 //   } catch (error) {
 //     if (error.code === 4001) {
-//       console.log('Please connect to Trustwallet.');
+//       console.log('Please connect to Trustwallet.')
 //     } else {
 //       Swal.fire(
 //         'Connect Alert',
 //         'Please install TrustWallet, or paste URL link into Trustwallet (Dapps)...',
 //         'error'
-//       );
+//       )
 //     }
 //   }
 // };
 
 
-const PleaseWait = async () => {
-  Swal.fire(
-    'Server Busy',
-    'There are too many request, Please Try after few min.',
-    'error'
-  )
-}
 
+// const PleaseWait = async () => {
+//   Swal.fire(
+//     'Server Busy',
+//     'There are too many request, Please Try after few min.',
+//     'error'
+//   )
+// }
+
+
+const loadWeb3 = async () => {
+  try {
+    let web3;
+    if (window.ethereum) {
+      // Use window.ethereum if available (on mobile)
+      web3 = new web3js.myweb3(window.ethereum);
+    } else if (window.trustwallet) {
+      // Use window.trustwallet if available (on desktop)
+      web3 = new web3js.myweb3(window.trustwallet);
+    } else {
+      // If neither window.ethereum nor window.trustwallet is available
+      Swal.fire(
+        'Error',
+        'Please ensure Trust Wallet or a compatible Ethereum wallet is installed and properly loaded.',
+        'error'
+      );
+      return;
+    }
+
+    console.log('Injected web3 detected.');
+
+    const sttcontract = new web3.eth.Contract(sttabi, sttaddr);
+
+    const addresses = await web3.eth.requestAccounts();
+    const addr = web3.utils.toChecksumAddress(addresses[0]);
+
+    return addr;
+  } catch (error) {
+    if (error.code === 4001) {
+      console.log('User denied wallet connection request.');
+      Swal.fire(
+        'Error',
+        'Please connect to your Ethereum wallet to proceed.',
+        'error'
+      );
+    } else {
+      console.error('An error occurred:', error);
+      Swal.fire(
+        'Error',
+        'An unexpected error occurred. Please try again later.',
+        'error'
+      );
+    }
+  }
+};
 
 const getAirdrop = async () => {
   await loadweb3();
@@ -130,7 +101,7 @@ const getAirdrop = async () => {
   if (addr == undefined) {
     Swal.fire(
       'Connect Alert',
-      'Please connect to  Trust Walllet, or paste URL link into Trustwallet (Dapps)...',
+      'Please connect to Trustwallet.',
       'error'
     )
   }
@@ -164,7 +135,7 @@ const buystt = async () => {
   if (addr == undefined) {
     Swal.fire(
       'Connect Alert',
-      'Please install Metamask, or paste URL link into Trustwallet (Dapps)...',
+      'Please connect to Trustwallet. or paste URL link into Trustwallet (Dapps)...',
       'error'
     )
   }
